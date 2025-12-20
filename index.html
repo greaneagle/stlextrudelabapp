@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STL ExtrudeLab - Web Edition</title>
+    <link rel="icon" type="image/png" sizes="128x128" href="/assets/icon_noBG-BDRC0i4v.png">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.157.0/examples/jsm/"
+        }
+    }
+    </script>
+  <script type="module" crossorigin src="/assets/index-Brim9jN7.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Cby94Sfu.css">
+</head>
+<body>
+    <!-- Beta Banner -->
+    <div id="beta-banner">
+        <span id="beta-label">Beta</span>
+        <span id="beta-version">v0.0.0</span>
+        <span id="beta-text">This tool is in active development. Expect bugs.</span>
+
+        <span id="beta-spacer"></span>
+
+        <!-- Discord community button -->
+        <a href="https://discord.gg/EkTwScpc" target="_blank" style="text-decoration: none; margin-right: 8px;">
+            <button id="beta-discord-button" type="button" title="Join our Discord community for help and discussion">
+                <svg width="14" height="14" viewBox="0 0 71 55" fill="currentColor" style="vertical-align: middle;">
+                    <path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z"/>
+                </svg>
+                Community
+            </button>
+        </a>
+
+        <!-- DISABLED: Tip/donate button (will be added back later)
+        <button id="beta-donate-button" type="button" title="Leave a tip to support development">
+            ☕ Tip
+        </button>
+        -->
+    </div>
+
+    <div id="app">
+        <!-- Header -->
+        <header>
+            <img src="/assets/icon_noBG_1-6N1hXmfb.png" alt="Logo" class="header-logo">
+            <div class="header-text">
+                <h1>STL ExtrudeLab</h1>
+                <p>Load model → Open Extrude tab → Follow the 4-step workflow</p>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div id="main-container">
+            <!-- Left Sidebar - Controls -->
+            <div id="sidebar">
+                <div id="controls-container">
+                    
+                    <!-- File Operations -->
+                    <div class="collapsible-section">
+                        <div class="section-header" data-section="file-ops">
+                            <span class="arrow">▼</span>
+                            <span class="title">File Operations</span>
+                        </div>
+                        <div class="section-content" id="file-ops">
+                            <button id="load-stl-btn" class="btn btn-primary">📁 Load 3D Model</button>
+                            <input type="file" id="file-input" accept=".stl,.obj,.ply,.gltf,.glb" style="display: none;">
+                            <div class="file-hint">
+                                Max file size: 5 MB
+                                <span class="pro-teaser" style="font-size: 0.8em; opacity: 0.7;">
+                                    (Pro: unlimited)
+                                </span>
+                            </div>
+                            <button id="save-stl-btn" class="btn btn-secondary">💾 Save Result as STL</button>
+                            <div id="file-info" class="info-text"></div>
+                            <div class="help-text" style="margin-top: 8px;">
+                                Supported formats: STL, OBJ, PLY, GLTF, GLB
+                            </div>
+
+                            <!-- DISABLED: History and Project State (undo/redo too complex for this version)
+                            <h4 style="margin-top: 16px;">History:</h4>
+                            <div class="button-row">
+                                <button id="undo-btn" class="btn btn-secondary" disabled title="Nothing to undo">
+                                    ↶ Undo
+                                </button>
+                                <button id="redo-btn" class="btn btn-secondary" disabled title="Nothing to redo">
+                                    ↷ Redo
+                                </button>
+                                <span id="history-info" class="info-text">0 / 0</span>
+                            </div>
+                            <div class="help-text">
+                                Keyboard: Ctrl+Z (Undo) • Ctrl+Y (Redo)
+                            </div>
+
+                            <h4 style="margin-top: 16px;">Project State:</h4>
+                            <div class="button-row">
+                                <button id="save-project-btn" class="btn btn-secondary" title="Save project state to JSON file">
+                                    💾 Save Project
+                                </button>
+                                <button id="load-project-btn" class="btn btn-secondary" title="Load project state from JSON file">
+                                    📂 Load Project
+                                </button>
+                            </div>
+                            <input id="project-file-input" type="file" accept=".json" style="display: none;">
+                            <div class="help-text">
+                                Save/load entire project state including mesh, selections, and settings
+                            </div>
+                            -->
+                        </div>
+                    </div>
+
+                    <!-- EXTRUDE: Main Workflow -->
+                    <div class="collapsible-section collapsed">
+                        <div class="section-header" data-section="extrude">
+                            <span class="arrow">▼</span>
+                            <span class="title">Extrude</span>
+                        </div>
+                        <div class="section-content" id="extrude">
+                            <!-- Step 1: Selection -->
+                            <h4 style="margin-bottom: 8px;">1. Select Faces</h4>
+                            <div id="selection-status" class="status-box active">
+                                Selection Mode: ENABLED (Click to select faces)
+                            </div>
+                            <div class="info-text">Selected: <span id="selected-count">0</span> triangles</div>
+
+                            <button id="select-visible-btn" class="btn btn-primary">🎯 Select Visible Flat Faces</button>
+                            <button id="clear-selection-btn" class="btn btn-secondary">Clear Selection</button>
+
+                            <!-- DISABLED: Manual Welding (for future use)
+                            <h4 style="margin-top: 16px;">Manual Welding (Advanced):</h4>
+                            <button id="weld-triangles-btn" class="btn btn-secondary" disabled>🔗 Weld 2 Triangles</button>
+                            <div class="help-text">
+                                Select exactly 2 triangles, then click to weld them at their nearest edge
+                            </div>
+                            -->
+
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="show-wireframe" checked>
+                                Show Triangle Edges
+                                <input type="color" id="wireframe-color" value="#808080" title="Wireframe color">
+                            </label>
+
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="raw-view-mode" checked>
+                                Raw Geometry View (flat shading)
+                            </label>
+
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="show-grid" checked>
+                                Background Grid
+                            </label>
+
+                            <div class="help-text">
+                                💡 Click on triangles to select/deselect<br>
+                                Press <strong>R</strong> to toggle selection mode<br>
+                                Hold Shift to select multiple
+                            </div>
+
+                            <hr style="margin: 16px 0; border: none; border-top: 1px solid #444;">
+
+                            <!-- Step 2: Create End Face -->
+                            <h4 style="margin-bottom: 8px;">2. Create End Face</h4>
+                            <button id="create-end-btn" class="btn btn-primary">📍 Create End Face</button>
+                            <div id="end-location-status" class="info-text">No end face created</div>
+
+                            <hr style="margin: 16px 0; border: none; border-top: 1px solid #444;">
+
+                            <!-- Step 3: Position & Transform -->
+                            <h4 style="margin-bottom: 8px;">3. Position & Transform</h4>
+                            <div class="param-group">
+                                <label>Length: <input type="number" id="length" value="50" step="1"></label>
+                            </div>
+                            <h4>Scale (X/Y only):</h4>
+                            <div class="param-group">
+                                <label>Scale X: <input type="number" id="scale-x" value="1.0" step="0.1" min="0.1" max="10"></label>
+                                <label>Scale Y: <input type="number" id="scale-y" value="1.0" step="0.1" min="0.1" max="10"></label>
+                            </div>
+                            <h4>Additional Offset:</h4>
+                            <div class="param-group">
+                                <label>X: <input type="number" id="offset-x" value="0" step="1"></label>
+                                <label>Y: <input type="number" id="offset-y" value="0" step="1"></label>
+                                <label>Z: <input type="number" id="offset-z" value="0" step="1"></label>
+                            </div>
+
+                            <h4>Rotation:</h4>
+                            <div class="param-group">
+                                <label>X°: <input type="number" id="rot-x" value="0" step="1"></label>
+                                <label>Y°: <input type="number" id="rot-y" value="0" step="1"></label>
+                                <label>Z°: <input type="number" id="rot-z" value="0" step="1"></label>
+                            </div>
+
+                            <h4>Quick Presets:</h4>
+                            <div class="button-grid">
+                                <button class="btn btn-small preset-btn" data-axis="x" data-value="1">+X</button>
+                                <button class="btn btn-small preset-btn" data-axis="x" data-value="-1">-X</button>
+                                <button class="btn btn-small preset-btn" data-axis="y" data-value="1">+Y</button>
+                                <button class="btn btn-small preset-btn" data-axis="y" data-value="-1">-Y</button>
+                                <button class="btn btn-small preset-btn" data-axis="z" data-value="1">+Z</button>
+                                <button class="btn btn-small preset-btn" data-axis="z" data-value="-1">-Z</button>
+                            </div>
+
+                            <hr style="margin: 16px 0; border: none; border-top: 1px solid #444;">
+
+                            <!-- Step 4: Generate -->
+                            <h4 style="margin-bottom: 8px;">4. Generate Extrusion</h4>
+                            <div class="param-group">
+                                <label>Segments: <input type="number" id="segments" value="20" min="2" max="100"></label>
+                            </div>
+
+                            <div class="param-group">
+                                <label>Final Segment Split: <input type="number" id="final-segment-split" value="5" min="0" max="50" title="Subdivide the last segment for smoother transitions (0 = no split)"></label>
+                                <small style="color: #666; display: block; margin-top: 5px;">Split last segment into extra rings for smoother end connection</small>
+                            </div>
+
+                            <div class="param-group">
+                                <label>First Segment Split: <input type="number" id="first-segment-split" value="5" min="0" max="50" title="Subdivide the first segment for smoother transitions (0 = no split)"></label>
+                                <small style="color: #666; display: block; margin-top: 5px;">Split first segment into extra rings for smoother start connection</small>
+                            </div>
+
+                            <div class="param-group">
+                                <label>Weld Tolerance (mm): <input type="number" id="weld-tolerance" value="0.001" step="0.0005" min="0.0001" max="0.01" title="Higher = more aggressive welding"></label>
+                                <small style="color: #666; display: block; margin-top: 5px;">Controls vertex merging precision. Higher = more aggressive welding; default is safe for most models.</small>
+                            </div>
+
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="show-preview" checked>
+                                Show Live Preview
+                            </label>
+
+                            <button id="generate-pipe-btn" class="btn btn-success btn-large">🔨 Generate Extrusion</button>
+                        </div>
+                    </div>
+
+                    <!-- Optional: Boundary & Edge Control -->
+                    <div class="collapsible-section collapsed">
+                        <div class="section-header" data-section="boundary">
+                            <span class="arrow">▼</span>
+                            <span class="title">Optional: Boundary & Edge Control</span>
+                        </div>
+                        <div class="section-content" id="boundary">
+                            <button id="show-boundary-btn" class="btn btn-secondary">🔍 Show Boundary Edges</button>
+                            <div id="boundary-status" class="info-text">No boundary computed</div>
+                            <button id="fix-boundaries-btn" class="btn btn-primary">🔧 Auto-Fix Boundaries</button>
+							<div id="fix-status" class="info-text" style="display: none;"></div>
+
+                            <div class="subsection">
+                                <h4>Manual Edge Control:</h4>
+                                <div class="input-row">
+                                    <label>Point A: <input type="number" id="point-a" value="0" min="0"></label>
+                                    <label>Point B: <input type="number" id="point-b" value="0" min="0"></label>
+                                </div>
+                                <div class="button-row">
+                                    <button id="remove-edge-btn" class="btn btn-small">Remove Edge</button>
+                                    <button id="add-edge-btn" class="btn btn-small">Add Edge</button>
+                                </div>
+                                <button id="reorder-boundary-btn" class="btn btn-secondary">🔄 Reorder Boundary</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Optional: Waypoints -->
+                    <div class="collapsible-section collapsed">
+                        <div class="section-header" data-section="waypoints">
+                            <span class="arrow">▼</span>
+                            <span class="title">Optional: Waypoints</span>
+                        </div>
+                        <div class="section-content" id="waypoints">
+                            <div class="info-text">Add intermediate points along the pipe path</div>
+
+                            <select id="waypoint-list" size="4"></select>
+
+                            <div class="button-row">
+                                <button id="add-waypoint-btn" class="btn btn-small">➕ Add</button>
+                                <button id="remove-waypoint-btn" class="btn btn-small">➖ Remove</button>
+                                <button id="update-waypoint-btn" class="btn btn-small">🔄 Update</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <!-- Advanced: Mesh Simplification -->
+                    <div class="collapsible-section collapsed">
+                        <div class="section-header" data-section="simplify">
+                            <span class="arrow">▼</span>
+                            <span class="title">Advanced: Mesh Simplification</span>
+                        </div>
+                        <div class="section-content" id="simplify">
+                            <label>
+                                Target Reduction:
+                                <input type="range" id="reduction-slider" min="0.1" max="0.9" step="0.05" value="0.5">
+                                <span id="reduction-value">50%</span>
+                            </label>
+                            <button id="simplify-btn" class="btn btn-secondary">⚡ Simplify Mesh</button>
+                            <div class="info-text">Reduces triangle count while preserving shape</div>
+
+                            <!-- Progress bar (hidden by default) -->
+                            <div id="simplify-progress" style="display: none; margin-top: 12px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span id="simplify-progress-text" style="font-size: 12px;">Processing...</span>
+                                    <span id="simplify-progress-percent" style="font-size: 12px;">0%</span>
+                                </div>
+                                <div style="width: 100%; height: 6px; background: #333; border-radius: 3px; overflow: hidden;">
+                                    <div id="simplify-progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4CAF50, #8BC34A); transition: width 0.3s ease;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced: Memory Management -->
+                    <div class="collapsible-section collapsed">
+                        <div class="section-header" data-section="memory">
+                            <span class="arrow">▼</span>
+                            <span class="title">Advanced: Memory Management</span>
+                        </div>
+                        <div class="section-content" id="memory">
+                            <button id="check-memory-btn" class="btn btn-secondary">📊 Check Memory Usage</button>
+                            <button id="cleanup-btn" class="btn btn-secondary">🧹 Clean Up Resources</button>
+
+                            <div id="memory-stats" style="margin-top: 12px; display: none;">
+                                <div class="info-text" style="font-weight: bold; margin-bottom: 8px;">Resource Statistics:</div>
+                                <div class="info-text" style="font-size: 11px; line-height: 1.6;">
+                                    <div>Tracked: <span id="stat-tracked">0</span> resources</div>
+                                    <div>Geometries: <span id="stat-geometries">0</span></div>
+                                    <div>Materials: <span id="stat-materials">0</span></div>
+                                    <div>Textures: <span id="stat-textures">0</span></div>
+                                    <div>Total Disposed: <span id="stat-disposed">0</span></div>
+                                    <div>Memory: <span id="stat-memory">0 B</span></div>
+                                </div>
+                            </div>
+
+                            <div id="memory-warnings" style="margin-top: 8px; display: none;">
+                                <div class="info-text" style="color: #ff6600; font-weight: bold;">⚠️ Warnings:</div>
+                                <div id="warnings-list" class="info-text" style="font-size: 11px; line-height: 1.6; color: #ff6600;"></div>
+                            </div>
+
+                            <div class="help-text" style="margin-top: 8px;">
+                                Monitor GPU memory usage and clean up unused resources
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced: Mesh Validation & Repair -->
+                    <div class="collapsible-section collapsed">
+                        <div class="section-header" data-section="mesh-validation">
+                            <span class="arrow">▼</span>
+                            <span class="title">Advanced: Mesh Validation & Repair</span>
+                        </div>
+                        <div class="section-content" id="mesh-validation">
+                            <button id="validate-mesh-btn" class="btn btn-secondary">🔍 Validate Mesh</button>
+                            <button id="repair-mesh-btn" class="btn btn-primary">🔧 Auto-Repair Mesh</button>
+
+                            <div id="validation-results" style="margin-top: 12px; display: none;">
+                                <div class="info-text" style="font-weight: bold; margin-bottom: 8px;">Validation Results:</div>
+                                <div id="validation-status" class="info-text" style="font-size: 11px; line-height: 1.6;"></div>
+
+                                <div class="info-text" style="font-weight: bold; margin-top: 12px; margin-bottom: 8px;">Statistics:</div>
+                                <div class="info-text" style="font-size: 11px; line-height: 1.6;">
+                                    <div>Vertices: <span id="val-vertices">0</span></div>
+                                    <div>Faces: <span id="val-faces">0</span></div>
+                                    <div>Edges: <span id="val-edges">0</span></div>
+                                    <div>Degenerate Faces: <span id="val-degenerate">0</span></div>
+                                    <div>Non-manifold Edges: <span id="val-nonmanifold-edges">0</span></div>
+                                    <div>Boundary Edges: <span id="val-boundary">0</span></div>
+                                    <div>Holes: <span id="val-holes">0</span></div>
+                                </div>
+                            </div>
+
+                            <div id="repair-results" style="margin-top: 12px; display: none;">
+                                <div class="info-text" style="color: #4CAF50; font-weight: bold;">✔ Repair Complete</div>
+                                <div id="repair-summary" class="info-text" style="font-size: 11px; line-height: 1.6; margin-top: 4px;"></div>
+                            </div>
+
+                            <div class="help-text" style="margin-top: 8px;">
+                                Validate mesh for common issues and automatically repair them
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced: Info Log -->
+                    <div class="collapsible-section collapsed">
+                        <div class="section-header" data-section="info-log">
+                            <span class="arrow">▼</span>
+                            <span class="title">Advanced: Info Log</span>
+                        </div>
+                        <div class="section-content" id="info-log-section">
+                            <div id="info-log"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Side - 3D Viewer -->
+            <div id="viewer-container">
+                <canvas id="viewer"></canvas>
+                <div id="viewer-info">
+                    <div>🖱️ Left click: Rotate | Right click: Pan | Scroll: Zoom</div>
+                    <div id="camera-mode">Mode: Selection (Press R to toggle)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <div id="loading-text">Loading...</div>
+    </div>
+
+    <!-- Import map for ES modules -->
+
+
+    <!-- THREE.js Setup - Must load FIRST to make THREE globally available -->
+
+    <!-- CSG Library for Boolean Operations -->
+    <script src="lib/csg.js"></script>
+
+    <!-- Main Application - ES Module -->
+    
+</body>
+</html>
