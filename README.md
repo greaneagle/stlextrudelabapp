@@ -3,6 +3,8 @@
 A browser-based 3D mesh editor for creating pipe and tube extrusions from selected faces on existing 3D models.  
 No installation required — runs entirely in your browser.
 
+Free Live version available here: https://www.stlextrudelab.com/
+
 ---
 
 ## Why This Exists
